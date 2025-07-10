@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Schedule Output</title>
+  <link rel="stylesheet" href='static/styles.css'>
+  <style>
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+    .day {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    .entry {
+      margin-bottom: 6px;
+      padding: 5px;
+      background-color: #dff0d8;
+      border-left: 5px solid #3c763d;
+      border-radius: 4px;
+    }
+    .entry.fixed {
+      background-color: #f2dede;
+      border-left: 5px solid #a94442;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Your 30-Day Study Schedule</h2>
+
+    <div id="calendar" class="calendar"></div>
+
+    <button onclick="downloadCSV()">Download as CSV</button>
+    <button onclick="window.location.href='homepage.html'">Back to Home</button>
+  </div>
+
+  <script src="static/scripts.js"></script>
+</body>
+</html>

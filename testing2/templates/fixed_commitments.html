@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fixed Commitments</title>
+  <link rel="stylesheet" href='static/styles.css'>
+</head>
+<body>
+  <div class="container">
+    <h2>Step 1: Fixed Commitments</h2>
+    <label>Subject: <input type="text" id="subject"></label>
+    <label>Start Time: <input type="datetime-local" id="startTime"></label>
+    <label>End Time: <input type="datetime-local" id="endTime"></label>
+    <button onclick="addCommitment()">Add</button>
+
+    <table id="commitmentsTable">
+      <tr><th>Subject</th><th>Start</th><th>End</th></tr>
+    </table>
+
+    <button onclick="goToNext()">Next</button>
+  </div>
+
+  <script src="static/scripts.js"></script>
+</body>
+</html>

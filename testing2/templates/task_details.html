@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Details</title>
+  <link rel="stylesheet" href='static/styles.css'>
+</head>
+<body>
+  <div class="container">
+    <h2>Step 2: Task Details</h2>
+    <label>Task Title: <input type="text" id="taskSubject"></label>
+    <label>Estimated Time (minutes): <input type="number" id="estimatedTime"></label>
+    <label>Due Date: <input type="date" id="dueDate"></label>
+    <label>Priority (1 = highest): <input type="number" id="priority"></label>
+    <button onclick="addTask()">Add</button>
+
+    <table id="tasksTable">
+      <tr><th>Task</th><th>Est. Time</th><th>Due</th><th>Priority</th></tr>
+    </table>
+
+    <button onclick="goToNext()">Next</button>
+  </div>
+
+  <script src="static/scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Preferences</title>
+  <link rel="stylesheet" href='static/styles.css'>
+</head>
+<body>
+  <div class="container">
+    <h2>Step 3: User Preferences</h2>
+
+    <label>Preferred Study Time:
+      <select multiple id="preferredTimes">
+        <option value="morning">Morning (9am–12pm)</option>
+        <option value="afternoon">Afternoon (12pm–5pm)</option>
+        <option value="evening">Evening (5pm–7pm)</option>
+        <option value="night">Night (8pm–12am)</option>
+      </select>
+    </label>
+
+    <label>Prefer Breaks Between Tasks?
+      <input type="checkbox" id="preferBreaks">
+    </label>
+
+    <label>Preferred Work Duration (mins):
+      <input type="number" id="workDuration" placeholder="Optional (default: 60)">
+    </label>
+
+    <button onclick="generateSchedule()">Generate Schedule</button>
+  </div>
+
+  <script src="static/scripts.js"></script>
+</body>
+</html>
