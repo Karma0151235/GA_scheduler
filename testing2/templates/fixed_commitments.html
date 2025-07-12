@@ -7,19 +7,39 @@
 </head>
 <body>
   <div class="container">
-    <h2>Step 1: Fixed Commitments</h2>
-    <label>Subject: <input type="text" id="subject"></label>
-    <label>Start Time: <input type="datetime-local" id="startTime"></label>
-    <label>End Time: <input type="datetime-local" id="endTime"></label>
-    <button onclick="addCommitment()">Add</button>
+    <h2>Step 1: Enter Your Fixed Commitments</h2>
+    <label>Subject:</label>
+    <input type="text" id="subject"><br>
 
-    <table id="commitmentsTable">
-      <tr><th>Subject</th><th>Start</th><th>End</th></tr>
+    <label>Day of the Week:</label>
+    <select id="dayOfWeek">
+      <option>Monday</option>
+      <option>Tuesday</option>
+      <option>Wednesday</option>
+      <option>Thursday</option>
+      <option>Friday</option>
+      <option>Saturday</option>
+      <option>Sunday</option>
+    </select><br>
+
+    <label>Start Time:</label>
+    <input type="time" id="startTime"><br>
+
+    <label>End Time:</label>
+    <input type="time" id="endTime"><br>
+
+    <button onclick="addCommitment()">Add Commitment</button>
+
+    <table id="commitmentsTable" border="1">
+      <tr><th>Subject</th><th>Day</th><th>Start</th><th>End</th></tr>
     </table>
 
     <button onclick="goToNext()">Next</button>
+
   </div>
 
   <script src="static/scripts.js"></script>
 </body>
 </html>
+
+
