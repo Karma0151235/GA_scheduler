@@ -10,7 +10,16 @@ STUDY_HOURS = {
 SLEEP_HOURS = range(0, 8)
 DEFAULT_ATTENTION_SPAN = 60
 
-# Generate 30 days worth of time blocks, each 30 minutes
+DAY_NAME_TO_INDEX = {
+    "Monday": 0,
+    "Tuesday": 1,
+    "Wednesday": 2,
+    "Thursday": 3,
+    "Friday": 4,
+    "Saturday": 5,
+    "Sunday": 6
+}
+
 def generate_time_blocks(start_date, days=30):
     blocks = []
     for i in range(days):
@@ -21,24 +30,28 @@ def generate_time_blocks(start_date, days=30):
             blocks.append((start, end))
     return blocks
 
-# Expand fixed commitments to repeat weekly for 30 days
+# 🆕 Fixed commitments now use day name + start/end time
 def expand_fixed_commitments(fixed_commitments, days=30):
     repeated = []
     for item in fixed_commitments:
         subject = item["subject"]
-        original_start = datetime.strptime(item["start"], "%Y-%m-%dT%H:%M")
-        original_end = datetime.strptime(item["end"], "%Y-%m-%dT%H:%M")
-        weekday = original_start.weekday()
+        weekday_name = item["day"]
+        weekday = DAY_NAME_TO_INDEX.get(weekday_name, -1)
+
+        if weekday == -1:
+            continue  # Invalid weekday, skip it
+
+        start_time_obj = datetime.strptime(item["startTime"], "%H:%M").time()
+        end_time_obj = datetime.strptime(item["endTime"], "%H:%M").time()
 
         for i in range(days):
             current_day = datetime.now().date() + timedelta(days=i)
             if current_day.weekday() == weekday:
-                new_start = datetime.combine(current_day, original_start.time())
-                new_end = datetime.combine(current_day, original_end.time())
+                new_start = datetime.combine(current_day, start_time_obj)
+                new_end = datetime.combine(current_day, end_time_obj)
                 repeated.append((subject, new_start, new_end))
     return repeated
 
-# Filter time blocks based on user preferences and fixed commitments
 def filter_study_blocks(time_blocks, user_prefs, fixed):
     preferred_hours = []
     for pref in user_prefs["preferredTimes"]:
@@ -54,7 +67,6 @@ def filter_study_blocks(time_blocks, user_prefs, fixed):
         filtered.append((start, end))
     return filtered
 
-# Break long tasks into chunks based on attention span
 def split_task(task_time, attention_span):
     parts = []
     while task_time > 0:
@@ -63,12 +75,9 @@ def split_task(task_time, attention_span):
         task_time -= part
     return parts
 
-# Main function to generate schedule
 def generate_schedule(fixed_commitments, tasks, user_preferences):
-    # Expand repeating fixed commitments
     fixed = expand_fixed_commitments(fixed_commitments)
 
-    # Sort tasks by priority and due date urgency
     def task_sort_key(t):
         days_left = (datetime.strptime(t["due"], "%Y-%m-%d") - datetime.now()).days
         urgency_bonus = 0 if days_left > 7 else (7 - days_left)
@@ -77,13 +86,11 @@ def generate_schedule(fixed_commitments, tasks, user_preferences):
     sorted_tasks = sorted(tasks, key=task_sort_key)
     attention = user_preferences.get("attentionSpan", DEFAULT_ATTENTION_SPAN)
 
-    # Generate available blocks over 30 days
     blocks = generate_time_blocks(datetime.now().strftime("%Y-%m-%d"), days=30)
     available_blocks = filter_study_blocks(blocks, user_preferences, fixed)
 
     schedule = []
 
-    # Add fixed commitments first
     for subject, start, end in fixed:
         schedule.append({
             "type": "Fixed Commitment",
@@ -92,7 +99,6 @@ def generate_schedule(fixed_commitments, tasks, user_preferences):
             "end": end.strftime("%Y-%m-%d %H:%M")
         })
 
-    # Schedule tasks into free slots
     block_index = 0
     for task in sorted_tasks:
         parts = split_task(task["estimated"], attention)
@@ -111,10 +117,8 @@ def generate_schedule(fixed_commitments, tasks, user_preferences):
             })
 
             block_index += 1
-
             if user_preferences.get("preferBreaks") and block_index < len(available_blocks):
-                block_index += 1  # Skip 1 block for break
+                block_index += 1
 
-    # Sort final schedule by start time
     schedule.sort(key=lambda x: x["start"])
     return schedule
