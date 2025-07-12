@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify, render_template
 from scheduler import generate_schedule
+from flask_cors import CORS
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
+CORS(app) 
 
 # Homepage route
 @app.route('/')
