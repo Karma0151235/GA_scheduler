@@ -20,25 +20,28 @@ function goToNext() {
 // ========== Fixed Commitments ==========
 function addCommitment() {
   const subject = document.getElementById('subject').value;
-  const start = document.getElementById('startTime').value;
-  const end = document.getElementById('endTime').value;
+  const day = document.getElementById('dayOfWeek').value;
+  const startTime = document.getElementById('startTime').value;
+  const endTime = document.getElementById('endTime').value;
 
-  if (!subject || !start || !end) {
+  if (!subject || !day || !startTime || !endTime) {
     alert("Please fill in all fields.");
     return;
   }
 
   const commitments = getData("fixedCommitments");
-  commitments.push({ subject, start, end });
+  commitments.push({ subject, day, startTime, endTime });
   saveData("fixedCommitments", commitments);
 
   const table = document.getElementById("commitmentsTable");
   const row = table.insertRow();
   row.insertCell(0).innerText = subject;
-  row.insertCell(1).innerText = start;
-  row.insertCell(2).innerText = end;
+  row.insertCell(1).innerText = day;
+  row.insertCell(2).innerText = startTime;
+  row.insertCell(3).innerText = endTime;
 
   document.getElementById('subject').value = '';
+  document.getElementById('dayOfWeek').value = '';
   document.getElementById('startTime').value = '';
   document.getElementById('endTime').value = '';
 }
@@ -100,6 +103,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const commitments = getData("fixedCommitments");
   const tasks = getData("taskDetails");
   const prefs = getData("userPreferences");
+  
+  console.log("Fixed Commitments:", commitments);
 
   fetch("http://localhost:5000/generate", {
     method: "POST",
